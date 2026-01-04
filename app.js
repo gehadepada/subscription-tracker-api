@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {PORT} from './config/env.js';
+import {NODE_ENV, PORT} from './config/env.js';
 
 import userRouter from './routes/user.routes.js';
 
@@ -20,7 +20,7 @@ app.use('/api/v1/user' , userRouter);
 app.use('/api/v1/subscriptions' , subscriptionRouter);
 
 app.listen(PORT,async() => {
-  console.log(`API running on port ${PORT}`);
+  console.log(`API running on port ${PORT , NODE_ENV}`);
   await connectToDatabase();
 });
 
