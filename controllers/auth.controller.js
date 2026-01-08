@@ -14,9 +14,9 @@ export const signUp = async (req, res, next) => {
 
     const exists = await User.findOne({ email });
     if (exists) {
-     const error=new Error("User already exist");
-     error.statusCode=409;
-     throw error;
+      const error = new Error("User already exist");
+      error.statusCode = 409;
+      throw error;
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -30,7 +30,7 @@ export const signUp = async (req, res, next) => {
     const token = jwt.sign(
       { userId: newUsers[0]._id },
       JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
+      { expiresIn: JWT_EXPIRED_IN }
     );
 
     await session.commitTransaction();
@@ -56,23 +56,23 @@ export const signIn = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-     const error=new Error("User not found");
-     error.statusCode=404;
-     throw error;
-     
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      throw error;
+
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-     const error=new Error("Invalid password");
-     error.statusCode=401;
-     throw error;
+      const error = new Error("Invalid password");
+      error.statusCode = 401;
+      throw error;
     }
 
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRED_IN }
     );
 
     res.status(200).json({

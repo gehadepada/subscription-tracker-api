@@ -78,4 +78,6 @@ subscriptionsScheme.pre('save' , function(next)
     }
     next();
 
-})
+});
+const Subscription =mongoose.model('Subscription',subscriptionsScheme);
+export default Subscription;
